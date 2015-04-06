@@ -141,7 +141,7 @@ func buildCriuArgs(container *libcontainer.Config, criuImageDir, pidFile, criuCm
 		criuCmdPath, "restore", "-d", "-v4",
 		"-D", criuImageDir, "-o", RestoreLog, "--pidfile", pidFile,
 		"--root", container.RootFs,
-		"--manage-cgroups", "--evasive-devices", "--tcp-established",
+		"--manage-cgroups", "--evasive-devices", "--tcp-established", "--file-locks",
 	}
 
 	// Append arguments for external bind mounts.

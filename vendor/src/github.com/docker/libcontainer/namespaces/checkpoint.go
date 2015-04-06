@@ -33,7 +33,7 @@ func Checkpoint(container *libcontainer.Config, imageDir string, initPid int) er
 		"dump", "-v4",
 		"-D", imageDir, "-o", CheckpointLog,
 		"--root", container.RootFs,
-		"--manage-cgroups", "--evasive-devices", "--tcp-established",
+		"--manage-cgroups", "--evasive-devices", "--tcp-established", "--file-locks",
 		"-t", strconv.Itoa(initPid),
 	}
 
