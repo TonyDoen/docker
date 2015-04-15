@@ -54,6 +54,20 @@ func Restore(container *libcontainer.Config, stdin io.Reader, stdout, stderr io.
 		return -1, err
 	}
 
+	// If the container's root is VFS, we need to bind mount it.
+	// This is because the container is running in a pivot_root
+	// environment and we need to specify --root on restore.  This is
+	// a requirement only for VFS.	For AUFS, the bind mount is
+	// implied when setting up the container's root.
+	// XXX Since we don't have access to the graphdriver at this level,
+	//     we examine the root pathname for now.
+	if strings.Contains(container.RootFs, "/docker/vfs/dir/") {
+		if err := syscall.Mount(container.RootFs, container.RootFs, "bind", syscall.MS_BIND|syscall.MS_REC, ""); err != nil {
+			return -1, err
+		}
+		defer syscall.Unmount(container.RootFs, syscall.MNT_DETACH)
+	}
+
 	// Execute CRIU to restore.
 	// Note that this doesn't directly execute CRIU.
 	// It executes dockerinit which will exec CRIU
