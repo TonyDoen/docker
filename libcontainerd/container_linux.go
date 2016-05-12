@@ -65,7 +65,7 @@ func (ctr *container) spec() (*specs.Spec, error) {
 	return &spec, nil
 }
 
-func (ctr *container) start() error {
+func (ctr *container) start(checkpoint string, checkpointDir string) error {
 	spec, err := ctr.spec()
 	if err != nil {
 		return nil
@@ -76,11 +76,13 @@ func (ctr *container) start() error {
 	}
 
 	r := &containerd.CreateContainerRequest{
-		Id:         ctr.containerID,
-		BundlePath: ctr.dir,
-		Stdin:      ctr.fifo(syscall.Stdin),
-		Stdout:     ctr.fifo(syscall.Stdout),
-		Stderr:     ctr.fifo(syscall.Stderr),
+		Id:            ctr.containerID,
+		BundlePath:    ctr.dir,
+		Stdin:         ctr.fifo(syscall.Stdin),
+		Stdout:        ctr.fifo(syscall.Stdout),
+		Stderr:        ctr.fifo(syscall.Stderr),
+		Checkpoint:    checkpoint,
+		CheckpointDir: checkpointDir,
 		// check to see if we are running in ramdisk to disable pivot root
 		NoPivotRoot: os.Getenv("DOCKER_RAMDISK") != "",
 	}
@@ -160,7 +162,7 @@ func (ctr *container) handleEvent(e *containerd.Event) error {
 							logrus.Error(err)
 						}
 					} else {
-						ctr.start()
+						ctr.start("", "")
 					}
 				}()
 			}

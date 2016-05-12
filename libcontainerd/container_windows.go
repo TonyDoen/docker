@@ -226,7 +226,7 @@ func (ctr *container) waitExit(process *process, isFirstProcessToStart bool) err
 						}
 						logrus.Error(err)
 					} else {
-						ctr.client.Create(ctr.containerID, ctr.ociSpec, ctr.options...)
+						ctr.client.Create(ctr.containerID, "", "", ctr.ociSpec, ctr.options...)
 					}
 				}()
 			}

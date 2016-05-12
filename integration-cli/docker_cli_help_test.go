@@ -125,6 +125,9 @@ func (s *DockerSuite) TestHelpTextVerify(c *check.C) {
 		cmdsToTest = append(cmdsToTest, "network inspect")
 		cmdsToTest = append(cmdsToTest, "network ls")
 		cmdsToTest = append(cmdsToTest, "network rm")
+		cmdsToTest = append(cmdsToTest, "checkpoint create")
+		cmdsToTest = append(cmdsToTest, "checkpoint ls")
+		cmdsToTest = append(cmdsToTest, "checkpoint rm")
 
 		// Divide the list of commands into go routines and  run the func testcommand on the commands in parallel
 		// to save runtime of test

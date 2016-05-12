@@ -2,6 +2,7 @@ package cobraadaptor
 
 import (
 	"github.com/docker/docker/api/client"
+	"github.com/docker/docker/api/client/checkpoint"
 	"github.com/docker/docker/api/client/container"
 	"github.com/docker/docker/api/client/image"
 	"github.com/docker/docker/api/client/network"
@@ -35,6 +36,7 @@ func NewCobraAdaptor(clientFlags *cliflags.ClientFlags) CobraAdaptor {
 	rootCmd.SetFlagErrorFunc(cli.FlagErrorFunc)
 	rootCmd.SetOutput(stdout)
 	rootCmd.AddCommand(
+		checkpoint.NewCheckpointCommand(dockerCli),
 		container.NewAttachCommand(dockerCli),
 		container.NewCreateCommand(dockerCli),
 		container.NewDiffCommand(dockerCli),

@@ -51,6 +51,7 @@ func (r *containerRouter) initRoutes() {
 		router.NewGetRoute("/containers/{name:.*}/attach/ws", r.wsContainersAttach),
 		router.NewGetRoute("/exec/{id:.*}/json", r.getExecByID),
 		router.NewGetRoute("/containers/{name:.*}/archive", r.getContainersArchive),
+		router.NewGetRoute("/containers/{name:.*}/checkpoints", r.getContainerCheckpoints),
 		// POST
 		router.NewPostRoute("/containers/create", r.postContainersCreate),
 		router.NewPostRoute("/containers/{name:.*}/kill", r.postContainersKill),
@@ -68,9 +69,11 @@ func (r *containerRouter) initRoutes() {
 		router.NewPostRoute("/exec/{name:.*}/resize", r.postContainerExecResize),
 		router.NewPostRoute("/containers/{name:.*}/rename", r.postContainerRename),
 		router.NewPostRoute("/containers/{name:.*}/update", r.postContainerUpdate),
+		router.NewPostRoute("/containers/{name:.*}/checkpoints", r.postContainerCheckpoint),
 		// PUT
 		router.NewPutRoute("/containers/{name:.*}/archive", r.putContainersArchive),
 		// DELETE
 		router.NewDeleteRoute("/containers/{name:.*}", r.deleteContainers),
+		router.NewDeleteRoute("/containers/{name:.*}/checkpoints/{checkpoint:.*}", r.deleteContainerCheckpoint),
 	}
 }

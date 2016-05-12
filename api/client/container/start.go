@@ -20,6 +20,7 @@ type startOptions struct {
 	attach     bool
 	openStdin  bool
 	detachKeys string
+	checkpoint string
 
 	containers []string
 }
@@ -43,6 +44,7 @@ func NewStartCommand(dockerCli *client.DockerCli) *cobra.Command {
 	flags.BoolVarP(&opts.attach, "attach", "a", false, "Attach STDOUT/STDERR and forward signals")
 	flags.BoolVarP(&opts.openStdin, "interactive", "i", false, "Attach container's STDIN")
 	flags.StringVar(&opts.detachKeys, "detach-keys", "", "Override the key sequence for detaching a container")
+	flags.StringVar(&opts.checkpoint, "checkpoint", "", "Restore from this checkpoint")
 	return cmd
 }
 
@@ -103,7 +105,10 @@ func runStart(dockerCli *client.DockerCli, opts *startOptions) error {
 		})
 
 		// 3. Start the container.
-		if err := dockerCli.Client().ContainerStart(ctx, container, types.ContainerStartOptions{}); err != nil {
+		startOptions := types.ContainerStartOptions{
+			CheckpointID: opts.checkpoint,
+		}
+		if err := dockerCli.Client().ContainerStart(ctx, container, startOptions); err != nil {
 			cancelFun()
 			<-cErr
 			return err
@@ -125,6 +130,16 @@ func runStart(dockerCli *client.DockerCli, opts *startOptions) error {
 		if status != 0 {
 			return cli.StatusError{StatusCode: status}
 		}
+	} else if opts.checkpoint != "" {
+		if len(opts.containers) > 1 {
+			return fmt.Errorf("You cannot restore multiple containers at once.")
+		}
+		container := opts.containers[0]
+		startOptions := types.ContainerStartOptions{
+			CheckpointID: opts.checkpoint,
+		}
+		return dockerCli.Client().ContainerStart(ctx, container, startOptions)
+
 	} else {
 		// We're not going to attach to anything.
 		// Start as many containers as we want.

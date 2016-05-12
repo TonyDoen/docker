@@ -39,7 +39,7 @@ type stateBackend interface {
 	ContainerResize(name string, height, width int) error
 	ContainerRestart(name string, seconds int) error
 	ContainerRm(name string, config *types.ContainerRmConfig) error
-	ContainerStart(name string, hostConfig *container.HostConfig) error
+	ContainerStart(name string, hostConfig *container.HostConfig, checkpoint string) error
 	ContainerStop(name string, seconds int) error
 	ContainerUnpause(name string) error
 	ContainerUpdate(name string, hostConfig *container.HostConfig) ([]string, error)
@@ -62,6 +62,12 @@ type attachBackend interface {
 	ContainerAttach(name string, c *backend.ContainerAttachConfig) error
 }
 
+type checkpointBackend interface {
+	CheckpointCreate(container string, config types.CheckpointCreateOptions) error
+	CheckpointDelete(container string, checkpointID string) error
+	CheckpointList(container string) ([]types.Checkpoint, error)
+}
+
 // Backend is all the methods that need to be implemented to provide container specific functionality.
 type Backend interface {
 	execBackend
@@ -69,4 +75,5 @@ type Backend interface {
 	stateBackend
 	monitorBackend
 	attachBackend
+	checkpointBackend
 }

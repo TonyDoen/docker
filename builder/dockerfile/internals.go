@@ -552,7 +552,7 @@ func (b *Builder) run(cID string) (err error) {
 		}
 	}()
 
-	if err := b.docker.ContainerStart(cID, nil); err != nil {
+	if err := b.docker.ContainerStart(cID, nil, ""); err != nil {
 		return err
 	}
 
