@@ -102,7 +102,7 @@ clone git github.com/miekg/pkcs11 df8ae6ca730422dba20c768ff38ef7d79077a59f
 clone git github.com/docker/go v1.5.1-1-1-gbaf439e
 clone git github.com/agl/ed25519 d2b94fd789ea21d12fac1a4443dd3a3f79cda72c
 
-clone git github.com/opencontainers/runc d49ece5a83da3dcb820121d6850e2b61bd0a5fbe # libcontainer
+clone git github.com/opencontainers/runc fd7d128191e4fb2316ec80d969160f53d8688d8a # libcontainer
 clone git github.com/opencontainers/specs f955d90e70a98ddfb886bd930ffd076da9b67998 # specs
 clone git github.com/seccomp/libseccomp-golang 60c9953736798c4a04e90d0f3da2f933d44fd4c4
 # libcontainer deps (see src/github.com/opencontainers/runc/Godeps/Godeps.json)
@@ -136,7 +136,7 @@ clone git google.golang.org/cloud dae7e3d993bc3812a2185af60552bb6b847e52a0 https
 clone git github.com/docker/docker-credential-helpers v0.3.0
 
 # containerd
-clone git github.com/docker/containerd 7fa8fc14776e0b8aeda52c9274630360fbe4e58c
+clone git github.com/docker/containerd c8cf68df703999ddb10a1e77baf48abf23e503da https://github.com/boucher/containerd.git
 
 # cli
 clone git github.com/spf13/cobra 75205f23b3ea70dc7ae5e900d074e010c23c37e9 https://github.com/dnephin/cobra.git
